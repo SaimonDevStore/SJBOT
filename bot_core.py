@@ -42,7 +42,7 @@ class BotCore:
 			recent = self.db.get_recent_posts(5)
 			lines = [
 				f"Bot: {'PAUSADO' if paused else 'ATIVO'}",
-				f"Janela: 08:00-22:00 {self.settings.timezone.key}",
+				f"Janela: 06:00-22:00 {self.settings.timezone.key}",
 				f"Frequência: {min_h}-{max_h} por hora",
 				"Últimos posts:",
 			]
@@ -112,7 +112,7 @@ class BotCore:
 			if self.send_enabled:
 				await self.bot.send_photo(
 					chat_id=self.settings.channel_id,
-					photo=URLInputFile(offer.image_url),
+					photo=offer.image_url,
 					caption=caption,
 				)
 			else:
@@ -135,5 +135,3 @@ class BotCore:
 				await self.bot.send_message(chat_id=admin_id, text=text)
 			except Exception:
 				logger.warning("Could not notify admin %s", admin_id)
-
-
