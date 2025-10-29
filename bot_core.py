@@ -84,6 +84,18 @@ class BotCore:
 			except Exception:
 				await message.answer("Erro ao processar. Uso: /freq 15 20")
 
+		@self.dp.message(Command("postnow"))
+		async def postnow_handler(message: Message) -> None:
+			if not self._is_admin(message.from_user.id if message.from_user else 0):
+				return
+			offers = self.ali.best_scored(limit=20)
+			for offer in offers:
+				ok = await self.post_offer(offer)
+				if ok:
+					await message.answer("Post enviado.")
+					return
+			await message.answer("Nenhuma oferta publicada agora (sem estoque/duplicada/erro).")
+
 	def _is_admin(self, user_id: int) -> bool:
 		return user_id in self.settings.admin_ids
 
