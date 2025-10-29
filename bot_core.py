@@ -110,11 +110,14 @@ class BotCore:
 		caption = format_offer_message(offer, self.ali.generate_affiliate_link(offer))
 		try:
 			if self.send_enabled:
-				await self.bot.send_photo(
-					chat_id=self.settings.channel_id,
-					photo=offer.image_url,
-					caption=caption,
-				)
+				if offer.image_url:
+					await self.bot.send_photo(
+						chat_id=self.settings.channel_id,
+						photo=offer.image_url,
+						caption=caption,
+					)
+				else:
+					await self.bot.send_message(chat_id=self.settings.channel_id, text=caption)
 			else:
 				logger.info("[DRY-RUN] Would post: %s", offer.product_id)
 		except Exception as exc:
@@ -135,3 +138,5 @@ class BotCore:
 				await self.bot.send_message(chat_id=admin_id, text=text)
 			except Exception:
 				logger.warning("Could not notify admin %s", admin_id)
+
+
