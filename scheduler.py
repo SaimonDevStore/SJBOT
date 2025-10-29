@@ -35,7 +35,7 @@ class PostingScheduler:
         self.scheduler.add_job(self._plan_next_hour, next_run_time=datetime.now(self.settings.timezone))
 
     def _in_window(self, now: datetime) -> bool:
-        return 8 <= now.hour < 22
+        return 6 <= now.hour < 22
 
     def _get_hourly_bounds(self) -> (int, int):
         mn = int(self.db.get_state("min_per_hour", str(self.settings.min_per_hour_default)))
